@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events'
+import game from './game'
 
 const animation = new EventEmitter()
 
@@ -9,9 +10,10 @@ animation.move = () => animation.emit('move')
 
 animation.on('start', () => {
   animation.timer = setInterval(animation.move, animation.intertime)
-  setInterval(() => animation.emit('stop'), 5000)
+  setTimeout(() => animation.emit('stop'), 5000)
 })
 
 animation.on('stop', () => {
   clearInterval(animation.timer)
+  game.emit('stop')
 })

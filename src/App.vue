@@ -1,6 +1,7 @@
 <template>
   <div id="app">
   <panel></panel>
+  <bird></bird>
   <land></land>
   </div>
 </template>
@@ -8,6 +9,7 @@
 <script>
 import land from './components/land.vue'
 import panel from './components/panel.vue'
+import bird from './components/bird.vue'
 
 export default {
   data () {
@@ -15,6 +17,7 @@ export default {
     }
   },
   components: {
+    bird,
     panel,
     land
   }

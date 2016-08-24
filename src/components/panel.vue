@@ -19,6 +19,9 @@ export default {
     game.on('start', () => {
       this.isshow = false
     })
+    game.on('stop', () => {
+      this.isshow = true
+    })
   },
   methods: {
     click () {
@@ -31,18 +34,22 @@ export default {
 <style scoped>
 #panel {
   position: absolute;
-  top: 25%;
-  left: 22.5%;
-  width: 55%;
-  height: 35%;
-  /*background: yellow;*/
+  width: 100%;
+  height: 100%;
+  background: transparent;
 }
 
 #panel button {
-  width: 40%;
-  height: 20%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -4rem;
+  margin-top: -1.75rem;
+  width: 8rem;
+  height: 3.5rem;
+  line-height: 3.5rem;
   font-size: 2.5rem;
-  margin: 40% 30%;
+  text-align: center;
   background: rgb(26,188,156);
   color: white;
   border: none;
