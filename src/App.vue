@@ -1,23 +1,19 @@
 <template>
   <div id="app">
-  <div id='building'></div>
-  <div id='building-back'></div>
+  <land></land>
   </div>
 </template>
 
 <script>
-import ground from './components/ground.vue'
+import land from './components/land.vue'
 
 export default {
   data () {
     return {
-      msg: 'vue flappybird!'
     }
   },
-  components () {
-    return {
-      ground
-    }
+  components: {
+    land
   }
 }
 </script>
@@ -38,15 +34,17 @@ body {
 }
 
 #app {
-  width: 650px;
-  height: 900px;
-  margin: 0 auto;
+  position: relative;
+  width:  600px;
+  height: 800px;
+  margin: auto;
   border: 5px solid black;
   background: url(./assets/img/bg_day.png) no-repeat;
   background-size: 100% 100%;
+  overflow: hidden;
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 600px) {
   #app {
     width: 100%;
     height: 100%;
