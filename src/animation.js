@@ -2,9 +2,7 @@ import { EventEmitter } from 'events'
 
 const animation = new EventEmitter()
 
-export {
-  animation
-}
+export default animation
 
 animation.intertime = 50
 

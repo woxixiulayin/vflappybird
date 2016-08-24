@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { animation } from '../event'
+import animation from '../animation'
 const leftlimit = -20
 
 export default {
