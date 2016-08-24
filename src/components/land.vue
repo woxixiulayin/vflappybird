@@ -17,8 +17,8 @@ export default {
     }
   },
   attached () {
-    animation.emit('start')
     animation.on('move', () => {
+      console.log('land move')
       this.move()
     })
   },

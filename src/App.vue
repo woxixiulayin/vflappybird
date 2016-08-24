@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+  <panel></panel>
   <land></land>
   </div>
 </template>
 
 <script>
 import land from './components/land.vue'
+import panel from './components/panel.vue'
 
 export default {
   data () {
@@ -13,6 +15,7 @@ export default {
     }
   },
   components: {
+    panel,
     land
   }
 }
