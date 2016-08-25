@@ -49,7 +49,7 @@ export default {
   height: 3.5rem;
   line-height: 3.5rem;
   font-size: 2.5rem;
-  text-align: center;
+  /*text-align: center;*/
   background: rgb(26,188,156);
   color: white;
   border: none;
