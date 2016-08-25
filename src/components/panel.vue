@@ -41,7 +41,7 @@ export default {
 
 #panel button {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
   margin-left: -4rem;
   margin-top: -1.75rem;

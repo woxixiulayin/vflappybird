@@ -11,7 +11,8 @@ import animation from '../animation'
 let state = {ready: 0, contronl: 1, dead: 2}
 let speed = {
   init: 3,
-  jump: -30,
+  controljump: -30,
+  readyjump: -12,
   gravityPlus: 1
 }
 
@@ -92,7 +93,7 @@ export default {
       if (!this.isOutOfRange()) return
       switch (this.state) {
         case state.ready:
-          this.speed += speed.jump
+          this.readyDownLimitAct()
           break
         case state.contronl:
           this.state = state.dead
@@ -106,10 +107,14 @@ export default {
       let appHeight = document.getElementById('app').clientHeight
       console.log(appHeight)
       this.positionConfig = {
-        init: appHeight * 0.5,
-        readydownlimit: appHeight * 0.6,
+        init: appHeight * 0.45,
+        readydownlimit: appHeight * 0.5,
         deaddownlimit: appHeight * 0.86
       }
+    },
+    readyDownLimitAct () {
+      this.speed = speed.readyjump
+      this.top = this.positionConfig.readydownlimit
     }
   }
 }
