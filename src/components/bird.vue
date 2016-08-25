@@ -7,18 +7,12 @@
 <script>
 import animation from '../animation'
 
-let screenheight = window.screen.height
 //  state（鸟的状态）: ready(准备状态，上下飞)， contronl(受控制), dead(自由落地)
 let state = {ready: 0, contronl: 1, dead: 2}
 let speed = {
   init: 3,
   jump: -30,
   gravityPlus: 1
-}
-let position = {
-  init: screenheight * 0.3,
-  readydownlimit: screenheight * 0.5,
-  deaddownlimit: screenheight * 0.14
 }
 
 export default {
@@ -28,9 +22,10 @@ export default {
       //  top: 位置，距离顶部的距离
       top: Number,
       uplimit: Number,
-      downlimit: position.readydownlimit,
+      downlimit: Number,
       speed: Number,
-      state: Number
+      state: Number,
+      positionConfig: {}
     }
   },
 
@@ -38,9 +33,9 @@ export default {
     downlimit () {
       switch (this.state) {
         case state.ready:
-          return position.readydownlimit
+          return this.positionConfig.readydownlimit
         case state.dead:
-          return position.deaddownlimit
+          return this.positionConfig.deaddownlimit
         case state.contronl:
           return
       }
@@ -81,7 +76,9 @@ export default {
     },
     reset () {
       //  初始化
-      this.top = position.init
+      this.setPositionConfig()
+
+      this.top = this.positionConfig.init
       this.speed = speed.init
       this.state = state.ready
     },
@@ -102,6 +99,16 @@ export default {
           break
         case state.dead:
           break
+      }
+    },
+
+    setPositionConfig () {
+      let appHeight = document.getElementById('app').clientHeight
+      console.log(appHeight)
+      this.positionConfig = {
+        init: appHeight * 0.5,
+        readydownlimit: appHeight * 0.6,
+        deaddownlimit: appHeight * 0.86
       }
     }
   }
