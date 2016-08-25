@@ -18,7 +18,6 @@ export default {
   },
   attached () {
     animation.on('update', () => {
-      console.log('land update')
       this.update()
     })
   },
