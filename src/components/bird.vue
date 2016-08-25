@@ -27,7 +27,7 @@ export default {
 
   methods () {
     return {
-      move: function () {
+      update: function () {
       },
       isOutOfRange () {
         return this.top < this.uplimit || this.top < this.downlimit

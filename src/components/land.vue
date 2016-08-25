@@ -17,13 +17,13 @@ export default {
     }
   },
   attached () {
-    animation.on('move', () => {
-      console.log('land move')
-      this.move()
+    animation.on('update', () => {
+      console.log('land update')
+      this.update()
     })
   },
   methods: {
-    move () {
+    update () {
       if (this.left < leftlimit) this.left = 0
       this.left -= this.speed
     }
