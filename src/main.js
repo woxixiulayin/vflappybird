@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-// import {animation} from './event'
+import game from './game'
 
 /* eslint-disable no-new */
 new Vue({
@@ -8,3 +8,4 @@ new Vue({
   components: { App }
 })
 
+game.emit('ready')

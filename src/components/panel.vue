@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     click () {
-      game.emit('ready')
+      game.emit('start')
     }
   }
 }
