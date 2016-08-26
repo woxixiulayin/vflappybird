@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import animation from '../animation'
+import world from '../world'
 import game from '../game'
 
 //  state（鸟的状态）: ready(准备状态，上下飞)， contronl(受控制), dead(自由落地)
@@ -20,8 +20,8 @@ let speed = {
 export default {
   data () {
     return {
-      name: 'bird',
       //  top: 位置，距离顶部的距离
+      name: 'bird',
       top: Number,
       uplimit: Number,
       downlimit: Number,
@@ -39,7 +39,7 @@ export default {
         case state.dead:
           return this.positionConfig.deaddownlimit
         case state.contronl:
-          return
+          return this.positionConfig.deaddownlimit
       }
     },
 
@@ -50,30 +50,25 @@ export default {
         case state.dead:
           return 0
         case state.contronl:
-          return
+          return 0
       }
     }
   },
 
   attached () {
     this.reset()
+    world.components.push(this)
     game.on('start', () => {
       this.state = state.contronl
-    })
-    animation.on('update', (...targets) => {
-      if (this.isInTargets(targets)) {
-        this.update()
-        this.stateAction()
-      }
     })
   },
 
   methods: {
     update () {
       this.top += this.speed
-      console.log(`bird speed: ${this.speed}`)
-      console.log(`bird state: ${this.state}`)
       this.speed += speed.gravityPlus
+
+      this.stateAction()
     },
     isOutOfRange () {
       console.log(this.top < this.uplimit || this.top > this.downlimit)
@@ -97,10 +92,10 @@ export default {
       if (!this.isOutOfRange()) return
       switch (this.state) {
         case state.ready:
-          this.readyDownLimitAct()
+          this.readyOutRangeAct()
           break
         case state.contronl:
-          this.state = state.dead
+          this.contronlOutRangeAct()
           break
         case state.dead:
           break
@@ -116,9 +111,17 @@ export default {
         deaddownlimit: appHeight * 0.86
       }
     },
-    readyDownLimitAct () {
+    readyOutRangeAct () {
+      // ready状态下，每次起跳的状态一致
       this.speed = speed.readyjump
       this.top = this.positionConfig.readydownlimit
+    },
+    contronlOutRangeAct () {
+      this.state = state.dead
+      game.emit('over')
+    },
+    deadOutRangeAct () {
+      game.emit('stop')
     }
   }
 }
