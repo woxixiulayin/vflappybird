@@ -71,7 +71,6 @@ export default {
       this.stateAction()
     },
     isOutOfRange () {
-      console.log(this.top < this.uplimit || this.top > this.downlimit)
       return this.top < this.uplimit || this.top > this.downlimit
     },
     reset () {
@@ -104,11 +103,12 @@ export default {
 
     setPositionConfig () {
       let appHeight = document.getElementById('app').clientHeight
-      console.log(appHeight)
       this.positionConfig = {
         init: appHeight * 0.45,
+        // 游戏开始前自由起跳的最低位置
         readydownlimit: appHeight * 0.5,
-        deaddownlimit: appHeight * 0.86
+        // 地面位置
+        deaddownlimit: appHeight * 0.86 - 20
       }
     },
     readyOutRangeAct () {
@@ -117,10 +117,17 @@ export default {
       this.top = this.positionConfig.readydownlimit
     },
     contronlOutRangeAct () {
+      //  设置死亡状态，继续跌落到地面
       this.state = state.dead
       game.emit('over')
+      //  如果是地面，则直接进入停止动画
+      if (this.downlimit === this.positionConfig.deaddownlimit) {
+        this.deadOutRangeAct()
+      }
     },
     deadOutRangeAct () {
+      console.log('stop')
+      this.speed = 0
       game.emit('stop')
     }
   }

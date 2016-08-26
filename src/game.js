@@ -16,6 +16,17 @@ game.on('stop', () => {
   world.timer.stop()
   world.listeners.remove()
 })
+
+// 游戏失败，鸟自由落地
+game.on('over', () => {
+  world.listeners.remove('land')
+})
+
+// 游戏结束
+game.on('stop', () => {
+  world.listeners.remove()
+})
+
 //  监听start事件，更新所有动画
 // game.on('start', () => {
 //   clearInterval(world.timer)
