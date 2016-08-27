@@ -12,7 +12,7 @@ import game from '../game'
 let state = {ready: 0, contronl: 1, dead: 2}
 let speed = {
   init: 3,
-  controljump: -30,
+  controljump: -20,
   readyjump: -12,
   gravityPlus: 1
 }
@@ -127,6 +127,9 @@ export default {
       this.left = this.positionConfig.deaddownlimit
       game.emit('stop')
     },
+    jumpListener () {
+      this.state === state.contronl ? this.speed = speed.controljump : null
+    },
     listenGameEvent () {
       game.on('ready', () => {
         this.reset()
@@ -134,6 +137,10 @@ export default {
       })
       game.on('start', () => {
         this.state = state.contronl
+        game.on('keyspace', this.jumpListener)
+      })
+      game.on('over', () => {
+        game.removeListener('keyspace', this.jumpListener)
       })
       game.on('stop', () => {
         world.listeners.remove(this.update)

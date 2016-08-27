@@ -1,6 +1,7 @@
 <template>
   <div id="app"
-  @keyup.space='jumpEvent'>
+  tabindex = 0
+  @keydown.space="jumpEvent">
   <panel></panel>
   <bird></bird>
   <land></land>
@@ -19,6 +20,7 @@ export default {
     }
   },
   attached () {
+    //  自动获得焦点
     document.getElementById('app').focus()
   },
   components: {
@@ -27,9 +29,8 @@ export default {
     land
   },
   methods: {
-    jumpEvent () {
+    jumpEvent (e) {
       game.emit('keyspace')
-      return false
     }
   }
 }

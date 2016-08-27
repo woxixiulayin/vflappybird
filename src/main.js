@@ -9,3 +9,4 @@ new Vue({
 })
 
 game.emit('ready')
+document.getElementById('app').focus()

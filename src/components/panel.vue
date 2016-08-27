@@ -16,6 +16,10 @@ export default {
     }
   },
   attached () {
+    game.on('keyspace', () => {
+      this.isshow = true
+      game.emit('start')
+    })
     game.on('start', () => {
       this.isshow = false
     })
@@ -25,6 +29,7 @@ export default {
   },
   methods: {
     click () {
+      document.getElementById('app').focus()
       game.emit('start')
     }
   }
