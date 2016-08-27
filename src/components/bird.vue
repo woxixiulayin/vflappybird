@@ -116,7 +116,7 @@ export default {
     contronlOutRangeAct () {
       //  设置死亡状态，继续跌落到地面
       this.state = state.dead
-      game.emit('over')
+      game.setState('over')
       //  如果是地面，则直接进入停止动画
       if (this.downlimit === this.positionConfig.deaddownlimit) {
         this.deadOutRangeAct()
@@ -125,7 +125,7 @@ export default {
     deadOutRangeAct () {
       this.speed = 0
       this.left = this.positionConfig.deaddownlimit
-      game.emit('stop')
+      game.setState('stop')
     },
     jumpListener () {
       this.state === state.contronl ? this.speed = speed.controljump : null
@@ -133,16 +133,21 @@ export default {
     listenGameEvent () {
       game.on('ready', () => {
         this.reset()
+        console.log('ready')
         world.listeners.add(this.update)
       })
       game.on('start', () => {
+        console.log('start')
+        console.log(game.state)
         this.state = state.contronl
         game.on('keyspace', this.jumpListener)
       })
       game.on('over', () => {
+        console.log('over')
         game.removeListener('keyspace', this.jumpListener)
       })
       game.on('stop', () => {
+        console.log('stop')
         world.listeners.remove(this.update)
       })
     }

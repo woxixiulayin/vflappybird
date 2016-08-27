@@ -8,5 +8,5 @@ new Vue({
   components: { App }
 })
 
-game.emit('ready')
 document.getElementById('app').focus()
+game.setState('ready')

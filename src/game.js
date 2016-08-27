@@ -1,37 +1,42 @@
 import { EventEmitter } from 'events'
 import world from './world'
 
-const game = new EventEmitter()
+let game = Object.assign(new EventEmitter(), (() => {
+  //  游戏状态 ready->start->over->stop
+  //  各游戏状态对应的回调操作
+  let readyCallback = () => {
+    world.timer.start()
+  }
+  let startCallback = () => {
+  }
+  let overCallback = () => {
+  }
+  let stopCallback = () => {
+    world.timer.stop()
+    world.listeners.remove()
+    setTimeout(() => game.setState('ready'), 2000)
+  }
+
+  //  状态与回调对应的map对象
+  let statesCallback = new Map([
+    ['ready', readyCallback],
+    ['start', startCallback],
+    ['over', overCallback],
+    ['stop', stopCallback]
+  ])
+
+  return {
+    //  记录当前游戏状态
+    state: '',
+    setState (state) {
+      if (!statesCallback.has(state) || this.state === state) return
+      statesCallback.get(state)()
+      this.state = state
+      this.emit(state)
+      console.log(`emit ${state}`)
+      // 执行相应的事件回调函数
+    }
+  }
+})())
 
 export default game
-
-// 监听ready事件， 更新新bird和land
-game.on('ready', () => {
-  world.timer.start()
-})
-
-// 监听stop事件， 更新新bird和land
-game.on('stop', () => {
-  world.timer.stop()
-})
-
-// 游戏结束
-game.on('stop', () => {
-  world.listeners.remove()
-  setTimeout(() => {
-    game.emit('ready')
-  }, 2000)
-})
-
-//  监听start事件，更新所有动画
-// game.on('start', () => {
-//   clearInterval(world.timer)
-//   world.timer = setInterval(world.update('all'), world.intertime)
-//   setTimeout(() => world.emit('stop'), 5000)
-// })
-
-// game.on('over', () => {
-//   clearInterval(world.timer)
-//   world.timer = setInterval(world.update('all'), world.intertime)
-//   setTimeout(() => world.emit('stop'), 5000)
-// })
