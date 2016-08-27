@@ -16,10 +16,6 @@ export default {
     }
   },
   attached () {
-    game.on('keyspace', () => {
-      this.isshow = true
-      game.setState('ready')
-    })
     game.on('start', () => {
       this.isshow = false
     })

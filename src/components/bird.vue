@@ -12,9 +12,9 @@ import game from '../game'
 let state = {ready: 0, contronl: 1, dead: 2}
 let speed = {
   init: 3,
-  controljump: -20,
-  readyjump: -12,
-  gravityPlus: 1
+  controljump: -27,
+  readyjump: -20,
+  gravityPlus: 2
 }
 
 export default {
@@ -94,6 +94,7 @@ export default {
           this.contronlOutRangeAct()
           break
         case state.dead:
+          this.deadOutRangeAct()
           break
       }
     },
@@ -101,11 +102,11 @@ export default {
     setPositionConfig () {
       let appHeight = document.getElementById('app').clientHeight
       this.positionConfig = {
-        init: appHeight * 0.45,
+        init: appHeight * 0.4,
         // 游戏开始前自由起跳的最低位置
-        readydownlimit: appHeight * 0.5,
+        readydownlimit: appHeight * 0.52,
         // 地面位置
-        deaddownlimit: appHeight * 0.86 - 20
+        deaddownlimit: appHeight * 0.875 - 20
       }
     },
     readyOutRangeAct () {
@@ -118,13 +119,13 @@ export default {
       this.state = state.dead
       game.setState('over')
       //  如果是地面，则直接进入停止动画
-      if (this.downlimit === this.positionConfig.deaddownlimit) {
-        this.deadOutRangeAct()
-      }
+      // if (this.downlimit === this.positionConfig.deaddownlimit) {
+      //   this.deadOutRangeAct()
+      // }
     },
     deadOutRangeAct () {
       this.speed = 0
-      this.left = this.positionConfig.deaddownlimit
+      // this.top = this.positionConfig.deaddownlimit
       game.setState('stop')
     },
     jumpListener () {
@@ -133,21 +134,17 @@ export default {
     listenGameEvent () {
       game.on('ready', () => {
         this.reset()
-        console.log('ready')
         world.listeners.add(this.update)
       })
       game.on('start', () => {
-        console.log('start')
-        console.log(game.state)
+        this.reset()
         this.state = state.contronl
-        game.on('keyspace', this.jumpListener)
+        game.on('jump', this.jumpListener)
       })
       game.on('over', () => {
-        console.log('over')
-        game.removeListener('keyspace', this.jumpListener)
+        game.removeListener('jump', this.jumpListener)
       })
       game.on('stop', () => {
-        console.log('stop')
         world.listeners.remove(this.update)
       })
     }
@@ -167,5 +164,6 @@ export default {
   /*background-color: white;*/
   background: url(../assets/img/bird0_0.png) -7px -18px no-repeat;
   background-size: 75px 75px;
+  z-index: 100;
 }
 </style>

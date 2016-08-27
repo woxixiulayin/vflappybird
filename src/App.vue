@@ -1,7 +1,7 @@
 <template>
   <div id="app"
   tabindex = 0
-  @keydown.space="jumpEvent">
+  @keydown.space="spaceEvent">
   <panel></panel>
   <bird></bird>
   <land></land>
@@ -29,8 +29,9 @@ export default {
     land
   },
   methods: {
-    jumpEvent (e) {
-      game.emit('keyspace')
+    spaceEvent () {
+      game.keyEvent('space')
+      return false
     }
   }
 }

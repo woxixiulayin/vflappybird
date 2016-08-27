@@ -4,7 +4,7 @@ const world = new EventEmitter()
 
 export default world
 
-world.intertime = 50
+world.intertime = 60
 
 //  注册动画监听事件回调函数，用于动画更新
 world.listeners = (() => {
