@@ -57,10 +57,7 @@ export default {
 
   attached () {
     this.reset()
-    world.components.push(this)
-    game.on('start', () => {
-      this.state = state.contronl
-    })
+    this.listenGameEvent()
   },
 
   methods: {
@@ -126,9 +123,21 @@ export default {
       }
     },
     deadOutRangeAct () {
-      console.log('stop')
       this.speed = 0
+      this.left = this.positionConfig.deaddownlimit
       game.emit('stop')
+    },
+    listenGameEvent () {
+      game.on('ready', () => {
+        this.reset()
+        world.listeners.add(this.update)
+      })
+      game.on('start', () => {
+        this.state = state.contronl
+      })
+      game.on('stop', () => {
+        world.listeners.remove(this.update)
+      })
     }
   }
 }

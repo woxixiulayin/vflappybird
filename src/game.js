@@ -8,23 +8,19 @@ export default game
 // 监听ready事件， 更新新bird和land
 game.on('ready', () => {
   world.timer.start()
-  world.listeners.add('bird', 'land')
 })
 
 // 监听stop事件， 更新新bird和land
 game.on('stop', () => {
   world.timer.stop()
-  world.listeners.remove()
-})
-
-// 游戏失败，鸟自由落地
-game.on('over', () => {
-  world.listeners.remove('land')
 })
 
 // 游戏结束
 game.on('stop', () => {
   world.listeners.remove()
+  setTimeout(() => {
+    game.emit('ready')
+  }, 2000)
 })
 
 //  监听start事件，更新所有动画

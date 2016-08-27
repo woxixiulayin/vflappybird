@@ -5,7 +5,9 @@
 </template>
 
 <script>
+import game from '../game'
 import world from '../world'
+
 const leftlimit = -20
 
 export default {
@@ -18,14 +20,18 @@ export default {
     }
   },
   attached () {
-    world.components.push(this)
-    console.log(this.$name)
+    this.listenGameEvent()
   },
   methods: {
     update () {
       if (this.left < leftlimit) this.left = 0
       this.left -= this.speed
       return this
+    },
+
+    listenGameEvent () {
+      game.on('ready', () => world.listeners.add(this.update))
+      game.on('over', () => world.listeners.remove(this.update))
     }
   }
 }

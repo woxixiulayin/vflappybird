@@ -19,7 +19,7 @@ export default {
     game.on('start', () => {
       this.isshow = false
     })
-    game.on('stop', () => {
+    game.on('ready', () => {
       this.isshow = true
     })
   },
