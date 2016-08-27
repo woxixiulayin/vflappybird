@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div id="app"
+  @keyup.space='jumpEvent'>
   <panel></panel>
   <bird></bird>
   <land></land>
@@ -10,16 +11,26 @@
 import land from './components/land.vue'
 import panel from './components/panel.vue'
 import bird from './components/bird.vue'
+import game from './game'
 
 export default {
   data () {
     return {
     }
   },
+  attached () {
+    document.getElementById('app').focus()
+  },
   components: {
     bird,
     panel,
     land
+  },
+  methods: {
+    jumpEvent () {
+      game.emit('keyspace')
+      return false
+    }
   }
 }
 </script>
