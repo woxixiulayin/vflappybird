@@ -62,13 +62,16 @@ export default {
 
   methods: {
     update () {
-      this.top += this.speed
-      this.speed += speed.gravityPlus
-
-      this.stateAction()
+      let topTemp = this.top + this.speed
+      if (this.isOutOfRange(topTemp)) {
+        this.outRangeAct()
+      } else {
+        this.speed += speed.gravityPlus
+        this.top = topTemp
+      }
     },
-    isOutOfRange () {
-      return this.top < this.uplimit || this.top > this.downlimit
+    isOutOfRange (top) {
+      return top < this.uplimit || top > this.downlimit
     },
     reset () {
       //  初始化
@@ -83,9 +86,15 @@ export default {
       return targets.indexOf(this.name) !== -1 || targets.indexOf('all') !== -1
     },
 
-    stateAction () {
-      //  判断当前状态下，下一步动作
-      if (!this.isOutOfRange()) return
+    outRangeAct () {
+      let topTemp = this.top + this.speed
+      if (topTemp < this.uplimit) {
+        topTemp = this.uplimit
+      } else {
+        topTemp = this.downlimit
+      }
+      this.top = topTemp
+      this.speed = 0
       switch (this.state) {
         case state.ready:
           this.readyOutRangeAct()
