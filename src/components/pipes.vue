@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       gutter: 300,
-      initLeftPositon: [0, 1, 2].map((item) => screenwidth + item * this.gutter)
+      initLeftPositon: []
     }
   },
   attached () {

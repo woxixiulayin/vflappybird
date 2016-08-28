@@ -5,6 +5,8 @@ const world = new EventEmitter()
 export default world
 
 world.intertime = 60
+world.width = 600
+world.height = 800
 
 //  注册动画监听事件回调函数，用于动画更新
 world.listeners = (() => {

@@ -11,7 +11,6 @@
 <script>
 import world from '../world'
 import game from '../game'
-import app from '../App'
 
 let defaultSize = {
   pipeWidth: 84,
@@ -50,15 +49,14 @@ export default {
     update () {
       this.left -= this.speed
       if (this.isOutOfLeftBorder()) {
-        // console.log('moveToTheLast')
-        // this.moveToTheLast()
+        this.moveToTheLast()
       }
     },
     isOutOfLeftBorder () {
       return this.left < -this.width
     },
     moveToTheLast () {
-      this.left = app.width
+      this.left = world.width * 1.5 - this.width
       this.passMiddlePosition = this.generatePassHeight()
     },
     generatePassHeight () {
