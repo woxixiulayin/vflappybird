@@ -1,6 +1,6 @@
 <template>
 <div class='pipe'
-  :style="{width: pipeWidth + 'px', height: pipeHeight + 'px',
+  :style="{width: width + 'px', height: height + 'px',
   left: left + 'px', top: top + 'px'}">
   <img src="../assets/img/pipe_down.png" alt="pipe_down">
   <div :style="{height: passHeight + 'px'}"></div>
@@ -11,6 +11,7 @@
 <script>
 import world from '../world'
 import game from '../game'
+import app from '../App'
 
 let defaultSize = {
   pipeWidth: 84,
@@ -25,15 +26,16 @@ export default {
   data () {
     return {
       speed: 10,
-      pipeWidth: defaultSize.pipeWidth,
-      pipeHeight: defaultSize.pipeHeight,
+      gutter: 300,
+      width: defaultSize.pipeWidth,
+      height: defaultSize.pipeHeight,
       passHeight: defaultSize.passHeight,
       passMiddlePosition: Math.random() * (538 - 150) + 150
     }
   },
   computed: {
     top () {
-      return this.passMiddlePosition - (this.pipeHeight + this.passHeight) / 2
+      return this.passMiddlePosition - (this.height + this.passHeight) / 2
     }
   },
   attached () {
@@ -47,6 +49,20 @@ export default {
   methods: {
     update () {
       this.left -= this.speed
+      if (this.isOutOfLeftBorder()) {
+        // console.log('moveToTheLast')
+        // this.moveToTheLast()
+      }
+    },
+    isOutOfLeftBorder () {
+      return this.left < -this.width
+    },
+    moveToTheLast () {
+      this.left = app.width
+      this.passMiddlePosition = this.generatePassHeight()
+    },
+    generatePassHeight () {
+      return Math.random() * (538 - 150) + 150
     }
   }
 }

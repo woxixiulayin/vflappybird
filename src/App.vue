@@ -19,6 +19,8 @@ import game from './game'
 export default {
   data () {
     return {
+      width: 600,
+      height: 800
     }
   },
   attached () {
