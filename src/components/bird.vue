@@ -82,10 +82,6 @@ export default {
       this.state = state.ready
     },
 
-    isInTargets (targets) {
-      return targets.indexOf(this.name) !== -1 || targets.indexOf('all') !== -1
-    },
-
     outRangeAct () {
       let topTemp = this.top + this.speed
       if (topTemp < this.uplimit) {

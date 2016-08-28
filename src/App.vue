@@ -4,6 +4,7 @@
   @keydown.space="spaceEvent">
   <panel></panel>
   <bird></bird>
+  <pipes></pipes>
   <land></land>
   </div>
 </template>
@@ -12,6 +13,7 @@
 import land from './components/land.vue'
 import panel from './components/panel.vue'
 import bird from './components/bird.vue'
+import pipes from './components/pipes'
 import game from './game'
 
 export default {
@@ -26,7 +28,8 @@ export default {
   components: {
     bird,
     panel,
-    land
+    land,
+    pipes
   },
   methods: {
     spaceEvent () {
@@ -42,6 +45,10 @@ export default {
 
 * {
   box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
 }
 html {
   height: 100%;
