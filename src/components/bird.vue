@@ -12,8 +12,8 @@ import game from '../game'
 let state = {ready: 0, contronl: 1, dead: 2}
 let speed = {
   init: 3,
-  controljump: -27,
-  readyjump: -20,
+  controljump: -20,
+  readyjump: -17,
   gravityPlus: 2
 }
 

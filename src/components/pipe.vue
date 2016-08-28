@@ -9,10 +9,13 @@
 </template>
 
 <script>
+import world from '../world'
+import game from '../game'
+
 let defaultSize = {
   pipeWidth: 84,
   pipeHeight: 1000,
-  passHeight: 140
+  passHeight: 160
 }
 
 export default {
@@ -21,6 +24,7 @@ export default {
   },
   data () {
     return {
+      speed: 10,
       pipeWidth: defaultSize.pipeWidth,
       pipeHeight: defaultSize.pipeHeight,
       passHeight: defaultSize.passHeight,
@@ -30,6 +34,19 @@ export default {
   computed: {
     top () {
       return this.passMiddlePosition - (this.pipeHeight + this.passHeight) / 2
+    }
+  },
+  attached () {
+    game.on('start', () => {
+      world.listeners.add(this.update)
+    })
+    game.on('over', () => {
+      world.listeners.remove(this.update)
+    })
+  },
+  methods: {
+    update () {
+      this.left -= this.speed
     }
   }
 }

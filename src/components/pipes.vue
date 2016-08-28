@@ -1,14 +1,17 @@
 <template>
   <ul id='pipes'>
     <template
-    v-for="leftposition in initLeftPositon">
-    <li is='pipe' :left="leftposition"></li>
+    v-for="leftposition in initLeftPositon" track-by="$index">
+    <li is='pipe' :left.sync="leftposition"></li>
     </template>
   </ul>
 </template>
 
 <script>
 import pipe from './pipe'
+import game from '../game'
+
+let screenwidth = 600
 
 export default {
   components: {
@@ -16,7 +19,16 @@ export default {
   },
   data () {
     return {
-      initLeftPositon: [100, 400]
+      gutter: 300,
+      initLeftPositon: []
+    }
+  },
+  attached () {
+    game.on('ready', this.reset)
+  },
+  methods: {
+    reset () {
+      this.initLeftPositon = [0, 1, 2].map((item) => screenwidth + item * this.gutter)
     }
   }
 }
