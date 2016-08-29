@@ -117,6 +117,7 @@ export default {
         //  到达地面
         this.top = _overDownLimit
         this.speed = 0
+        game.setState(game.states.stop)
       } else {
         //  坠落
         this.speed += speed.gravityPlus
@@ -129,44 +130,6 @@ export default {
     reset () {
       this.top = this.positionConfig.init
       this.speed = speed.init
-    },
-
-    outRangeAct () {
-      let topTemp = this.top + this.speed
-      if (topTemp < this.uplimit) {
-        topTemp = this.uplimit
-      } else {
-        topTemp = this.downlimit
-      }
-      this.top = topTemp
-      this.speed = 0
-      switch (this.state) {
-        case state.ready:
-          this.readyOutRangeAct()
-          break
-        case state.contronl:
-          this.contronlOutRangeAct()
-          break
-        case state.dead:
-          this.deadOutRangeAct()
-          break
-      }
-    },
-    readyOutRangeAct () {
-      // ready状态下，每次起跳的状态一致
-      this.speed = speed.readyjump
-      this.top = this.positionConfig.readydownlimit
-      console.log(this.speed)
-    },
-    contronlOutRangeAct () {
-      //  设置死亡状态，继续跌落到地面
-      this.state = state.dead
-      game.setState('over')
-    },
-    deadOutRangeAct () {
-      this.speed = 0
-      // this.top = this.positionConfig.deaddownlimit
-      game.setState('stop')
     },
     jumpListener () {
       this.state === state.contronl ? this.speed = speed.controljump : null
