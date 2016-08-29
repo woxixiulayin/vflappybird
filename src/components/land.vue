@@ -7,7 +7,7 @@
 <script>
 import game from '../game'
 import world from '../world'
-import app from '../App'
+import config from '../config'
 
 export default {
   data () {
@@ -20,8 +20,7 @@ export default {
   },
   computed: {
     top () {
-      console.log(app.data)
-      return app.width * 0.86
+      return config.land.top
     }
   },
   attached () {

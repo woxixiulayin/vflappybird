@@ -1,13 +1,15 @@
 <template>
   <div id='bird'
-  :style="{top: top + 'px'}">
+  :style="{top: top + 'px', left: left + 'px'}">
   </div>
+  <span class='test'>123</span>
 </template>
 
 <script>
 import world from '../world'
 import game from '../game'
 import store from '../store'
+import config from '../config'
 
 //  state（鸟的状态）: ready(准备状态，上下飞)， contronl(受控制), dead(自由落地)
 let state = {ready: 0, contronl: 1, dead: 2}
@@ -24,16 +26,22 @@ export default {
       //  top: 位置，距离顶部的距离
       name: 'bird',
       top: Number,
+      left: config.bird.left,
       uplimit: Number,
       downlimit: Number,
       speed: Number,
       state: Number,
       height: 43,
       width: 60,
-      positionConfig: {}
+      positionConfig: {
+        init: config.app.height * 0.4,
+        // 游戏开始前自由起跳的最低位置
+        readydownlimit: config.app.height * 0.5 - config.bird.height,
+        // 地面位置
+        overDownLimit: config.land.top - config.bird.height
+      }
     }
   },
-
   computed: {
     gamestate: {
       cache: false,
@@ -44,35 +52,14 @@ export default {
     downlimit: {
       cache: false,
       get: function () {
-        let downlimit
-        switch (this.gamestate) {
-          case game.states.ready:
-            downlimit = this.positionConfig.readydownlimit
-            break
-          case game.states.over:
-            downlimit = this.positionConfig.deaddownlimit
-            break
-          case game.states.start:
-            downlimit = store.state.passDownlimit
-            break
-        }
         //  去掉bird高度
-        return downlimit - this.height
+        return store.state.passDownlimit - this.height
       }
     },
     uplimit: {
       cache: false,
       get: function () {
-        let uplimit
-        switch (this.gamestate) {
-          case game.states.ready:
-            uplimit = 0
-            break
-          case game.states.start:
-            uplimit = store.state.passUplimit
-            break
-        }
-        return uplimit
+        return store.state.passUplimit
       }
     }
   },
@@ -84,22 +71,62 @@ export default {
 
   methods: {
     update () {
-      let topTemp = this.top + this.speed
-      if (this.isOutOfRange(topTemp)) {
-        this.outRangeAct()
-      } else {
-        this.speed += speed.gravityPlus
-        this.top = topTemp
+      console.log(this.gamestate)
+      switch (this.gamestate) {
+        case game.states.ready:
+          this.readyUpdate()
+          break
+        case game.states.start:
+          this.startUpdate()
+          break
+        case game.states.over:
+          this.overUpdate()
+          break
       }
-      console.log(this.isOutOfRange(topTemp))
+    },
+    readyUpdate () {
+      let _top = this.top + this.speed
+      let _readydownlimit = this.positionConfig.readydownlimit
+      if (_top > _readydownlimit) {
+        //  到达底部阈值
+        this.top = _readydownlimit
+        this.speed = speed.readyjump
+        console.log(this.speed)
+      } else {
+        //  下落
+        this.speed += speed.gravityPlus
+        this.top = _top
+      }
+    },
+    startUpdate () {
+      let _top = this.top + this.speed
+      if (this.isOutOfRange(_top)) {
+        //  碰到pipe
+        game.setState(game.states.over)
+      } else {
+        //  下落
+        this.speed += speed.gravityPlus
+        this.top = _top
+      }
+    },
+    overUpdate () {
+      let _top = this.top + this.speed
+      let _overDownLimit = this.positionConfig.overDownLimit
+      console.log(config.land.top)
+      if (_top > _overDownLimit) {
+        //  到达地面
+        this.top = _overDownLimit
+        this.speed = 0
+      } else {
+        //  坠落
+        this.speed += speed.gravityPlus
+        this.top = _top
+      }
     },
     isOutOfRange (top) {
       return top < this.uplimit || top > this.downlimit
     },
     reset () {
-      //  初始化
-      this.setPositionConfig()
-
       this.top = this.positionConfig.init
       this.speed = speed.init
     },
@@ -123,17 +150,6 @@ export default {
         case state.dead:
           this.deadOutRangeAct()
           break
-      }
-    },
-
-    setPositionConfig () {
-      let appHeight = document.getElementById('app').clientHeight
-      this.positionConfig = {
-        init: appHeight * 0.4,
-        // 游戏开始前自由起跳的最低位置
-        readydownlimit: appHeight * 0.52,
-        // 地面位置
-        deaddownlimit: appHeight * 0.875
       }
     },
     readyOutRangeAct () {
@@ -172,6 +188,9 @@ export default {
       game.on('stop', () => {
         world.listeners.remove(this.update)
       })
+    },
+    getBirdBottom (top) {
+      return top + this.height
     }
   }
 }
@@ -181,14 +200,17 @@ export default {
 #bird {
   position: absolute;
   /*top: 43%;*/
-  left: 25%;
   height: 43px;
   width: 60px;
-  margin-left: -5%;
-  margin-top: -5%;
-  /*background-color: white;*/
   background: url(../assets/img/bird0_0.png) -7px -18px no-repeat;
   background-size: 75px 75px;
   z-index: 100;
+}
+.test {
+  position: absolute;
+  top: 688px;
+  height: 43px;
+  width: 60px;
+  border: 1px solid black;
 }
 </style>

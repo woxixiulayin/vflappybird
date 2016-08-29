@@ -6,13 +6,13 @@ export default {
     height: 800
   },
   land: {
-    top: 800 * 0.865
+    top: 800 * 0.86
   },
   pipe: {
     passHight: 160
   },
   bird: {
-    left: 600 * 0.25,
+    left: 600 * 0.2,
     height: 43,
     width: 60
   }

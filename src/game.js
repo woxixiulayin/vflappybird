@@ -50,7 +50,7 @@ let game = Object.assign(new EventEmitter(), (() => {
   ])
 
   return {
-    states,
+    states: states,
     //  记录当前游戏状态
     state: '',
     setState (state) {

@@ -3,7 +3,7 @@
 export default {
   state: {
     score: 0,
-    passDownlimit: 800 * 0.875 - 20,
+    passDownlimit: 800,
     passUplimit: 0
   },
 
