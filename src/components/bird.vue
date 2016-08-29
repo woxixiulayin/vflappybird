@@ -33,26 +33,37 @@ export default {
   },
 
   computed: {
+    cached: false,
     downlimit () {
+      let downlimit
       switch (this.state) {
         case state.ready:
-          return this.positionConfig.readydownlimit
+          downlimit = this.positionConfig.readydownlimit
+          break
         case state.dead:
-          return this.positionConfig.deaddownlimit
+          downlimit = this.positionConfig.deaddownlimit
+          break
         case state.contronl:
-          return store.state.passDownlimit
+          downlimit = store.state.passDownlimit
+          break
       }
+      return downlimit
     },
 
     uplimit () {
+      let uplimit
       switch (this.state) {
         case state.ready:
-          return 0
+          uplimit = 0
+          break
         case state.dead:
-          return 0
+          uplimit = 0
+          break
         case state.contronl:
-          return store.state.passUplimit
+          uplimit = store.state.passUplimit
+          break
       }
+      return uplimit
     }
   },
 
@@ -70,6 +81,8 @@ export default {
         this.speed += speed.gravityPlus
         this.top = topTemp
       }
+      console.log(this.downlimit)
+      console.log(store.state.passDownlimit)
     },
     isOutOfRange (top) {
       return top < this.uplimit || top > this.downlimit

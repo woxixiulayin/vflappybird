@@ -41,15 +41,7 @@ export default {
       return this.passMiddlePosition - (this.height + this.passHeight) / 2
     },
     isBirdIn () {
-      return {
-        set: function (isIn) {
-          if (isIn) {
-            store.setUpDownLimit(this.passMiddlePosition - this.passHeight, this.passMiddlePosition + this.passHeight)
-          } else {
-            store.setUpDownLimit(-500, config.land.top)
-          }
-        }
-      }
+      return this.left < config.bird.left && this.left + this.width > config.bird.left
     }
   },
   attached () {
@@ -79,7 +71,14 @@ export default {
       return Math.random() * (538 - 150) + 150
     },
     changePassLimit () {
-      this.isBirdIn = this.left < config.bird.left && this.left + this.width > config.bird.left
+      //  通过管子之后
+      if (this.left + this.width < config.bird.left) {
+        store.setUpDownLimit(-500, config.land.top)
+      }
+      //  正在通过管子
+      if (this.isBirdIn) {
+        store.setUpDownLimit(this.passMiddlePosition - this.passHeight, this.passMiddlePosition + this.passHeight)
+      }
     }
   }
 }
