@@ -29,9 +29,6 @@ export default {
   methods: {
     reset () {
       this.pipesLeftPosition = [0, 1, 2].map((item) => screenwidth + item * this.gutter)
-    },
-    setPipeMoveWatcher () {
-
     }
   }
 }

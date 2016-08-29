@@ -10,5 +10,8 @@ export default {
   },
   pipe: {
     passHight: 160
+  },
+  bird: {
+    left: 600 * 0.25
   }
 }

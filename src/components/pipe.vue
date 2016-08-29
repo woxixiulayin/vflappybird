@@ -11,11 +11,14 @@
 <script>
 import world from '../world'
 import game from '../game'
+import store from '../store'
+import config from '../config'
 
-let defaultSize = {
+let defaultConfig = {
   pipeWidth: 84,
   pipeHeight: 1000,
-  passHeight: 160
+  passHeight: 160,
+  birdHorizontalPositon: 0.25 * 600
 }
 
 export default {
@@ -24,18 +27,29 @@ export default {
   },
   data () {
     return {
-      defaultSize: defaultSize,
+      defaultConfig: defaultConfig,
       speed: 10,
       gutter: 300,
-      width: defaultSize.pipeWidth,
-      height: defaultSize.pipeHeight,
-      passHeight: defaultSize.passHeight,
+      width: defaultConfig.pipeWidth,
+      height: defaultConfig.pipeHeight,
+      passHeight: defaultConfig.passHeight,
       passMiddlePosition: Math.random() * (538 - 150) + 150
     }
   },
   computed: {
     top () {
       return this.passMiddlePosition - (this.height + this.passHeight) / 2
+    },
+    isBirdIn () {
+      return {
+        set: function (isIn) {
+          if (isIn) {
+            store.setUpDownLimit(this.passMiddlePosition - this.passHeight, this.passMiddlePosition + this.passHeight)
+          } else {
+            store.setUpDownLimit(-500, config.land.top)
+          }
+        }
+      }
     }
   },
   attached () {
@@ -52,6 +66,7 @@ export default {
       if (this.isOutOfLeftBorder()) {
         this.moveToTheLast()
       }
+      this.changePassLimit()
     },
     isOutOfLeftBorder () {
       return this.left < -this.width
@@ -62,6 +77,9 @@ export default {
     },
     generatePassHeight () {
       return Math.random() * (538 - 150) + 150
+    },
+    changePassLimit () {
+      this.isBirdIn = this.left < config.bird.left && this.left + this.width > config.bird.left
     }
   }
 }
