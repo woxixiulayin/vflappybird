@@ -12,6 +12,8 @@ export default {
     passHight: 160
   },
   bird: {
-    left: 600 * 0.25
+    left: 600 * 0.25,
+    height: 43,
+    width: 60
   }
 }

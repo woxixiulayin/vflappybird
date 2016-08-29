@@ -41,7 +41,7 @@ export default {
       return this.passMiddlePosition - (this.height + this.passHeight) / 2
     },
     isBirdIn () {
-      return this.left < config.bird.left && this.left + this.width > config.bird.left
+      return this.left < config.bird.left - config.bird.width / 2 && this.left + this.width > config.bird.left + config.bird.width / 2
     }
   },
   attached () {
@@ -72,7 +72,7 @@ export default {
     },
     changePassLimit () {
       //  通过管子之后
-      if (this.left + this.width < config.bird.left) {
+      if (this.left + this.width < config.bird.left - config.bird.width / 2) {
         store.setUpDownLimit(-500, config.land.top)
       }
       //  正在通过管子
@@ -96,4 +96,5 @@ export default {
 .pipe>div {
   width: 100%;
 }
+
 </style>

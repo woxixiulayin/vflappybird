@@ -28,42 +28,52 @@ export default {
       downlimit: Number,
       speed: Number,
       state: Number,
+      height: 43,
+      width: 60,
       positionConfig: {}
     }
   },
 
   computed: {
-    cached: false,
-    downlimit () {
-      let downlimit
-      switch (this.state) {
-        case state.ready:
-          downlimit = this.positionConfig.readydownlimit
-          break
-        case state.dead:
-          downlimit = this.positionConfig.deaddownlimit
-          break
-        case state.contronl:
-          downlimit = store.state.passDownlimit
-          break
+    gamestate: {
+      cache: false,
+      get: function () {
+        return game.state
       }
-      return downlimit
     },
-
-    uplimit () {
-      let uplimit
-      switch (this.state) {
-        case state.ready:
-          uplimit = 0
-          break
-        case state.dead:
-          uplimit = 0
-          break
-        case state.contronl:
-          uplimit = store.state.passUplimit
-          break
+    downlimit: {
+      cache: false,
+      get: function () {
+        let downlimit
+        switch (this.gamestate) {
+          case game.states.ready:
+            downlimit = this.positionConfig.readydownlimit
+            break
+          case game.states.over:
+            downlimit = this.positionConfig.deaddownlimit
+            break
+          case game.states.start:
+            downlimit = store.state.passDownlimit
+            break
+        }
+        //  去掉bird高度
+        return downlimit - this.height
       }
-      return uplimit
+    },
+    uplimit: {
+      cache: false,
+      get: function () {
+        let uplimit
+        switch (this.gamestate) {
+          case game.states.ready:
+            uplimit = 0
+            break
+          case game.states.start:
+            uplimit = store.state.passUplimit
+            break
+        }
+        return uplimit
+      }
     }
   },
 
@@ -81,8 +91,7 @@ export default {
         this.speed += speed.gravityPlus
         this.top = topTemp
       }
-      console.log(this.downlimit)
-      console.log(store.state.passDownlimit)
+      console.log(this.isOutOfRange(topTemp))
     },
     isOutOfRange (top) {
       return top < this.uplimit || top > this.downlimit
@@ -93,7 +102,6 @@ export default {
 
       this.top = this.positionConfig.init
       this.speed = speed.init
-      this.state = state.ready
     },
 
     outRangeAct () {
@@ -125,22 +133,19 @@ export default {
         // 游戏开始前自由起跳的最低位置
         readydownlimit: appHeight * 0.52,
         // 地面位置
-        deaddownlimit: appHeight * 0.875 - 20
+        deaddownlimit: appHeight * 0.875
       }
     },
     readyOutRangeAct () {
       // ready状态下，每次起跳的状态一致
       this.speed = speed.readyjump
       this.top = this.positionConfig.readydownlimit
+      console.log(this.speed)
     },
     contronlOutRangeAct () {
       //  设置死亡状态，继续跌落到地面
       this.state = state.dead
       game.setState('over')
-      //  如果是地面，则直接进入停止动画
-      // if (this.downlimit === this.positionConfig.deaddownlimit) {
-      //   this.deadOutRangeAct()
-      // }
     },
     deadOutRangeAct () {
       this.speed = 0
@@ -153,6 +158,7 @@ export default {
     listenGameEvent () {
       game.on('ready', () => {
         this.reset()
+        this.state = state.ready
         world.listeners.add(this.update)
       })
       game.on('start', () => {
