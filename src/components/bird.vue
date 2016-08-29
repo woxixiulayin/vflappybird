@@ -2,7 +2,6 @@
   <div id='bird'
   :style="{top: top + 'px', left: left + 'px'}">
   </div>
-  <span class='test'>123</span>
 </template>
 
 <script>
@@ -112,7 +111,7 @@ export default {
     overUpdate () {
       let _top = this.top + this.speed
       let _overDownLimit = this.positionConfig.overDownLimit
-      console.log(config.land.top)
+      console.log(_overDownLimit)
       if (_top > _overDownLimit) {
         //  到达地面
         this.top = _overDownLimit
@@ -132,7 +131,7 @@ export default {
       this.speed = speed.init
     },
     jumpListener () {
-      this.state === state.contronl ? this.speed = speed.controljump : null
+      this.gamestate === game.states.start ? this.speed = speed.controljump : null
     },
     listenGameEvent () {
       game.on('ready', () => {
@@ -168,12 +167,5 @@ export default {
   background: url(../assets/img/bird0_0.png) -7px -18px no-repeat;
   background-size: 75px 75px;
   z-index: 100;
-}
-.test {
-  position: absolute;
-  top: 688px;
-  height: 43px;
-  width: 60px;
-  border: 1px solid black;
 }
 </style>

@@ -16,7 +16,7 @@ import config from '../config'
 
 let defaultConfig = {
   pipeWidth: 84,
-  pipeHeight: 1000,
+  pipeHeight: 1160,
   passHeight: 160,
   birdHorizontalPositon: 0.25 * 600
 }
@@ -38,10 +38,10 @@ export default {
   },
   computed: {
     top () {
-      return this.passMiddlePosition - (this.height + this.passHeight) / 2
+      return this.passMiddlePosition - this.height / 2
     },
     isBirdIn () {
-      return this.left < config.bird.left - config.bird.width / 2 && this.left + this.width > config.bird.left + config.bird.width / 2
+      return this.left < config.bird.left && this.left + this.width > config.bird.left + config.bird.width
     }
   },
   attached () {
@@ -72,12 +72,12 @@ export default {
     },
     changePassLimit () {
       //  通过管子之后
-      if (this.left + this.width < config.bird.left - config.bird.width / 2) {
-        store.setUpDownLimit(-500, config.land.top)
+      if (this.left + this.width < config.bird.left) {
+        store.setUpDownLimit(0, config.land.top)
       }
       //  正在通过管子
       if (this.isBirdIn) {
-        store.setUpDownLimit(this.passMiddlePosition - this.passHeight, this.passMiddlePosition + this.passHeight)
+        store.setUpDownLimit(this.top + 500, this.top + 660)
       }
     }
   }
@@ -91,10 +91,19 @@ export default {
 
 .pipe img {
   width: 100%;
+  height: 500px;
+  overflow: hidden;
 }
 
 .pipe>div {
   width: 100%;
 }
-
+.test {
+  position: absolute;
+  height: 160px;
+  width: 100%;
+  left: 0;
+  border: 2px solid red;
+  z-index: 200;
+}
 </style>

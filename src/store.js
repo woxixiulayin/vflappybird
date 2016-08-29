@@ -1,10 +1,12 @@
 //  游戏运行过程中的状态管理
+import config from './config'
+import game from './game'
 
-export default {
+let store = {
   state: {
     score: 0,
-    passDownlimit: 800,
-    passUplimit: 0
+    passUplimit: 0,
+    passDownlimit: config.land.top
   },
 
   setScore (number) {
@@ -17,5 +19,14 @@ export default {
     if (up !== +up || down !== +down) throw new Error('not a number')
     this.state.passUplimit = up
     this.state.passDownlimit = down
+  },
+  reset () {
+    this.state.score = 0
+    this.setUpDownLimit(0, config.land.top)
   }
 }
+
+game.on('ready', () => {
+  store.reset()
+})
+export default store
