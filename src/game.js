@@ -17,12 +17,19 @@ let game = Object.assign(new EventEmitter(), (() => {
     setTimeout(() => game.setState('ready'), 2000)
   }
 
+  // 游戏中的几个状态
+  let states = {
+    ready: 'ready',
+    start: 'start',
+    over: 'over',
+    stop: 'stop'
+  }
   //  状态与回调对应的map对象
   let statesCallback = new Map([
-    ['ready', readyCallback],
-    ['start', startCallback],
-    ['over', overCallback],
-    ['stop', stopCallback]
+    [states.ready, readyCallback],
+    [states.start, startCallback],
+    [states.over, overCallback],
+    [states.stop, stopCallback]
   ])
 
   let spaceKeyCallback = () => {
@@ -43,6 +50,7 @@ let game = Object.assign(new EventEmitter(), (() => {
   ])
 
   return {
+    states,
     //  记录当前游戏状态
     state: '',
     setState (state) {
