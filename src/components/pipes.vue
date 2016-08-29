@@ -1,7 +1,7 @@
 <template>
   <ul id='pipes'>
     <template
-    v-for="leftposition in initLeftPositon" track-by="$index">
+    v-for="leftposition in pipesLeftPosition" track-by="$index">
     <li is='pipe' :left.sync="leftposition"></li>
     </template>
   </ul>
@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       gutter: 300,
-      initLeftPositon: []
+      pipesLeftPosition: []
     }
   },
   attached () {
@@ -28,7 +28,10 @@ export default {
   },
   methods: {
     reset () {
-      this.initLeftPositon = [0, 1, 2].map((item) => screenwidth + item * this.gutter)
+      this.pipesLeftPosition = [0, 1, 2].map((item) => screenwidth + item * this.gutter)
+    },
+    setPipeMoveWatcher () {
+
     }
   }
 }

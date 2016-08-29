@@ -7,6 +7,7 @@
 <script>
 import world from '../world'
 import game from '../game'
+import store from '../store'
 
 //  state（鸟的状态）: ready(准备状态，上下飞)， contronl(受控制), dead(自由落地)
 let state = {ready: 0, contronl: 1, dead: 2}
@@ -39,7 +40,7 @@ export default {
         case state.dead:
           return this.positionConfig.deaddownlimit
         case state.contronl:
-          return this.positionConfig.deaddownlimit
+          return store.state.passDownlimit
       }
     },
 
@@ -50,7 +51,7 @@ export default {
         case state.dead:
           return 0
         case state.contronl:
-          return 0
+          return store.state.passUplimit
       }
     }
   },

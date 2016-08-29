@@ -24,6 +24,7 @@ export default {
   },
   data () {
     return {
+      defaultSize: defaultSize,
       speed: 10,
       gutter: 300,
       width: defaultSize.pipeWidth,

@@ -1,14 +1,13 @@
 <template>
   <div id='land'
-  :style="{left: left + 'px'}"
+  :style="{left: left + 'px', top: top + 'px'}"
   ></div>
 </template>
 
 <script>
 import game from '../game'
 import world from '../world'
-
-const leftlimit = -20
+import app from '../App'
 
 export default {
   data () {
@@ -16,7 +15,13 @@ export default {
       name: 'land',
       speed: 5,
       left: 0,
-      leftlimit
+      leftlimit: -20
+    }
+  },
+  computed: {
+    top () {
+      console.log(app.data)
+      return app.width * 0.86
     }
   },
   attached () {
@@ -24,7 +29,7 @@ export default {
   },
   methods: {
     update () {
-      if (this.left < leftlimit) this.left = 0
+      if (this.left < this.leftlimit) this.left = 0
       this.left -= this.speed
       return this
     },

@@ -1,0 +1,14 @@
+//  游戏的固定配置项
+
+export default {
+  app: {
+    width: 600,
+    height: 800
+  },
+  land: {
+    top: 800 * 0.865
+  },
+  pipe: {
+    passHight: 160
+  }
+}
