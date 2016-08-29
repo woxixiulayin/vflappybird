@@ -38,7 +38,7 @@ export default {
         // 游戏开始前自由起跳的最低位置
         readydownlimit: config.app.height * 0.5 - config.bird.height,
         // 地面位置
-        overDownLimit: config.land.top - config.bird.height
+        overDownLimit: config.land.top - config.bird.height + 5
       }
     }
   },
