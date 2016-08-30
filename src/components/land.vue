@@ -13,7 +13,7 @@ export default {
   data () {
     return {
       name: 'land',
-      speed: 5,
+      speed: 2,
       left: 0,
       leftlimit: -20
     }

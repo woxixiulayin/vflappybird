@@ -4,7 +4,7 @@ const world = new EventEmitter()
 
 export default world
 
-world.intertime = 60
+world.intertime = 20
 world.width = 600
 world.height = 800
 
