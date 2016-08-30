@@ -14,10 +14,12 @@ import game from '../game'
 import store from '../store'
 import config from '../config'
 
-//  state（鸟的状态）: ready(准备状态，上下飞)， contronl(受控制), dead(自由落地)
 let speed = {
+  //  初始速度
   init: 0,
+  //  空格起跳速度
   controljump: -8.5,
+  // ready阶段自由起跳速度
   readyjump: -8,
   gravityPlus: 0.3
 }
@@ -54,19 +56,6 @@ export default {
         return game.state
       }
     }
-    // downlimit: {
-    //   cache: false,
-    //   get: function () {
-    //     //  去掉bird高度
-    //     return store.state.passDownlimit - this.height
-    //   }
-    // },
-    // uplimit: {
-    //   cache: false,
-    //   get: function () {
-    //     return store.state.passUplimit
-    //   }
-    // }
   },
 
   attached () {
@@ -76,13 +65,13 @@ export default {
 
   methods: {
     update () {
-      console.log(this.speed)
       switch (this.gamestate) {
         case game.states.ready:
           this.readyUpdate()
           break
         case game.states.start:
-          this.downlimit = store.state.passDownlimit - this.height + positionfix
+          //  修正上下阈值
+          this.downlimit = store.state.passDownlimit - this.height + 2 * positionfix
           this.uplimit = store.state.passUplimit - positionfix
           this.startUpdate()
           break
@@ -98,7 +87,6 @@ export default {
         //  到达底部阈值
         this.top = _readydownlimit
         this.speed = speed.readyjump
-        console.log(this.speed)
       } else {
         //  下落
         this.speed += speed.gravityPlus
