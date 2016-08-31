@@ -1,11 +1,16 @@
 <template>
   <div id='bird'
-  :style="{top: top + 'px', left: left + 'px', width: width + 'px'}">
+  :style="{top: top + 'px',
+  left: left + 'px',
+  width: width + 'px'}" 
+  :class="[birdimg]">
   </div>
-  <div class='test'
+
+<!--显示bird的通过管子时的上下阈值  -->
+<!--   <div class='test'
   v-show='isShowLimit'
   :style="{top: uplimit + 'px', height: downlimit - uplimit + 'px',left: left + 'px', width: width + 'px'}">
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -29,24 +34,27 @@ let positionfix = 5
 export default {
   data () {
     return {
-      //  top: 位置，距离顶部的距离
       name: 'bird',
+      //  位置大小相关属性
       top: Number,
       left: config.bird.left,
-      uplimit: Number,
-      downlimit: Number,
       speed: Number,
       height: 43,
       width: 60,
-      //  显示上下阈值用于测试
-      isShowLimit: false,
+      //  飞行上下阈值
+      uplimit: Number,
+      downlimit: Number,
+      //  bird图片，用于飞行翅膀动画
+      birdimg: 'birdimg1',
+      //  一些默认参数
       positionConfig: {
         init: config.app.height * 0.4,
         // 游戏开始前自由起跳的最低位置
         readydownlimit: config.app.height * 0.5 - config.bird.height,
         // 地面位置
         overDownLimit: config.land.top - config.bird.height + 5
-      }
+      },
+      isShowLimit: false
     }
   },
   computed: {
@@ -79,6 +87,7 @@ export default {
           this.overUpdate()
           break
       }
+      this.updateBirdImg()
     },
     readyUpdate () {
       let _top = this.top + this.speed
@@ -156,6 +165,13 @@ export default {
     },
     getBirdBottom (top) {
       return top + this.height
+    },
+    updateBirdImg () {
+      let birdimgs = ['birdimg0', 'birdimg1', 'birdimg2']
+      if (this.gamestate === game.states.over) {
+        this.birdimg = birdimgs[2]
+      } else {
+      }
     }
   }
 }
@@ -167,14 +183,25 @@ export default {
   /*top: 43%;*/
   height: 43px;
   width: 60px;
-  background: url(../assets/img/bird0_0.png) -7px -18px no-repeat;
+  background-position: -7px -18px;
+  background-repeat: no-repeat;
   background-size: 75px 75px;
   z-index: 100;
   /*border: solid 1px black;*/
 }
-.test {
+
+.birdimg0 {
+  background-image: url(../assets/img/bird0_0.png)
+}
+.birdimg1 {
+  background-image: url(../assets/img/bird0_1.png)
+}
+.birdimg2 {
+  background-image: url(../assets/img/bird0_2.png)
+}
+/*.test {
   position: absolute;
   width: 84px;
   border: 1px solid black;
-}
+}*/
 </style>
