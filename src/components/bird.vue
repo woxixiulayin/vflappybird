@@ -3,7 +3,7 @@
   :style="{top: top + 'px',
   left: left + 'px',
   width: width + 'px'}" 
-  :class="[birdimg]">
+  :class="[birdimg, {roate90: isRotate}]">
   </div>
 
 <!--显示bird的通过管子时的上下阈值  -->
@@ -46,6 +46,8 @@ export default {
       downlimit: Number,
       //  bird图片，用于飞行翅膀动画
       birdimg: 'birdimg1',
+      //  当撞到管子后旋转90度
+      isRotate: false,
       //  一些默认参数
       positionConfig: {
         init: config.app.height * 0.4,
@@ -145,6 +147,8 @@ export default {
     listenGameEvent () {
       game.on('ready', () => {
         this.reset()
+        //  扶正bird
+        this.isRotate = false
         world.listeners.add(this.update)
       })
       game.on('start', () => {
@@ -152,10 +156,12 @@ export default {
         game.on('jump', this.jumpListener)
       })
       game.on('over', () => {
-        //  碰到管子后，停留半秒
+        //  碰到管子后，停留半秒，开始下落
         game.removeListener('jump', this.jumpListener)
         world.listeners.remove(this.update)
         setTimeout(() => {
+          //  bird旋转90度
+          this.isRotate = true
           world.listeners.add(this.update)
         }, 500)
       })
@@ -167,7 +173,8 @@ export default {
       return top + this.height
     },
     updateBirdImg () {
-      if (this.gamestate === game.states.over) {
+      if (this.gamestate === game.states.over ||
+          this.gamestate === game.states.stop) {
         this.birdimg = 'birdimg1'
       } else {
         this.birdimg = this.speed > 0 ? 'birdimg0' : 'birdimg2'
@@ -198,6 +205,10 @@ export default {
 }
 .birdimg2 {
   background-image: url(../assets/img/bird0_2.png)
+}
+.roate90 {
+  transform: rotate(90deg);
+  transition: transform 0.5s;
 }
 /*.test {
   position: absolute;
