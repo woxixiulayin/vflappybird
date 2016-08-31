@@ -23,7 +23,7 @@ let defaultConfig = {
 }
 
 function generatePassHeight () {
-  return Math.random() * (500 - 180) + 180
+  return Math.random() * (500 - 220) + 220
 }
 
 export default {
