@@ -167,10 +167,10 @@ export default {
       return top + this.height
     },
     updateBirdImg () {
-      let birdimgs = ['birdimg0', 'birdimg1', 'birdimg2']
       if (this.gamestate === game.states.over) {
-        this.birdimg = birdimgs[2]
+        this.birdimg = 'birdimg1'
       } else {
+        this.birdimg = this.speed > 0 ? 'birdimg0' : 'birdimg2'
       }
     }
   }
