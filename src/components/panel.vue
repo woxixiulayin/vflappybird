@@ -1,7 +1,6 @@
 <template>
-  <div id='panel'
-  v-show='isshow'>
-    <button @click='click'>{{text}}</button>
+  <div id='panel'>
+    <button v-show='isshow' @click='click'>{{text}}</button>
   </div>
 </template>
 
@@ -14,6 +13,8 @@ export default {
       text: 'Start',
       isshow: true
     }
+  },
+  components: {
   },
   attached () {
     game.on('start', () => {

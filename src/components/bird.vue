@@ -7,10 +7,10 @@
   </div>
 
 <!--显示bird的通过管子时的上下阈值  -->
-<!--   <div class='test'
+  <div class='test'
   v-show='isShowLimit'
   :style="{top: uplimit + 'px', height: downlimit - uplimit + 'px',left: left + 'px', width: width + 'px'}">
-  </div> -->
+  </div>
 </template>
 
 <script>
@@ -48,6 +48,8 @@ export default {
       birdimg: 'birdimg1',
       //  当撞到管子后旋转90度
       isRotate: false,
+      //  记录上次的临界点，用于判断得分
+      lastDownlimit: Number,
       //  一些默认参数
       positionConfig: {
         init: config.app.height * 0.4,
@@ -84,6 +86,10 @@ export default {
           this.downlimit = store.state.passDownlimit - this.height + 2 * positionfix
           this.uplimit = store.state.passUplimit - positionfix
           this.startUpdate()
+          if (this.lastDownlimit !== this.downlimit && store.state.passDownlimit === config.land.top) {
+            game.score()
+          }
+          this.lastDownlimit = this.downlimit
           break
         case game.states.over:
           this.overUpdate()
@@ -118,7 +124,7 @@ export default {
         this.speed = 0
         game.setState(game.states.over)
       } else {
-        //  下落
+        // 继续飞行
         this.speed += speed.gravityPlus
         this.top = _top
       }
@@ -140,6 +146,7 @@ export default {
     reset () {
       this.top = this.positionConfig.init
       this.speed = speed.init
+      this.lastDownlimit = config.land.top - this.height + 2 * positionfix
     },
     jumpListener () {
       this.gamestate === game.states.start ? this.speed = speed.controljump : null
@@ -210,9 +217,9 @@ export default {
   transform: rotate(90deg);
   transition: transform 0.5s;
 }
-/*.test {
+.test {
   position: absolute;
   width: 84px;
   border: 1px solid black;
-}*/
+}
 </style>

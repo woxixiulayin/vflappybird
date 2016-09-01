@@ -1,6 +1,6 @@
 <template>
-  <audio id='audio'
-  ></audio>
+  <audio id='bird'></audio>
+  <audio id='bgm'></audio>
 </template>
 
 <script>
@@ -10,17 +10,21 @@ let musicSrcMap = new Map([
   ['swooshing', '/static/music/swooshing.ogg'],
   ['die', '/static/music/die.ogg'],
   ['hit', '/static/music/hit.ogg'],
-  ['score', '/static/music/score.ogg'],
+  ['score', '/static/music/point.ogg'],
   ['wing', '/static/music/wing.ogg']
 ])
 
 export default {
   data () {
     return {
-      src: String
+      src: String,
+      birdAudio: {},
+      bgmAudio: {}
     }
   },
   attached () {
+    this.birdAudio = document.getElementById('bird')
+    this.bgmAudio = document.getElementById('bgm')
     game.on('jump', () => {
       this.playMusic('swooshing')
     })
@@ -37,8 +41,9 @@ export default {
   methods: {
     playMusic (music) {
       if (typeof music !== 'string' || !musicSrcMap.has(music)) return
-      this.$el.src = musicSrcMap.get(music)
-      this.$el.play()
+      let audio = music === 'score' ? this.bgmAudio : this.birdAudio
+      audio.src = musicSrcMap.get(music)
+      audio.play()
     }
   }
 }
