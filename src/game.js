@@ -67,7 +67,6 @@ let game = Object.assign(new EventEmitter(), (() => {
       keyEventCallback.get(key)()
     },
     score () {
-      store.addScore()
       game.emit('score')
     }
   }

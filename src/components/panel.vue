@@ -1,17 +1,29 @@
 <template>
   <div id='panel'>
+    <div class="score">
+      <img v-for="num in scoreNums"
+      :src="numImgsSrc[num]">
+    </div>
     <button v-show='isshow' @click='click'>{{text}}</button>
   </div>
 </template>
 
 <script>
 import game from '../game'
+import store from '../store'
 
 export default {
   data () {
     return {
       text: 'Start',
-      isshow: true
+      isshow: true,
+      score: store.getScore(),
+      numImgsSrc: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => require(`../assets/img/num_${item}.png`))
+    }
+  },
+  computed: {
+    scoreNums () {
+      return String(this.score).split('')
     }
   },
   components: {
@@ -22,6 +34,11 @@ export default {
     })
     game.on('ready', () => {
       this.isshow = true
+      this.score = 0
+    })
+    game.on('score', () => {
+      store.addScore()
+      this.score = store.getScore()
     })
   },
   methods: {
@@ -38,6 +55,7 @@ export default {
   width: 100%;
   height: 100%;
   background: transparent;
+  z-index: 200;
 }
 
 #panel button {
@@ -55,7 +73,6 @@ export default {
   color: white;
   border: none;
   border-radius: 10px;
-  z-index: 200;
 }
 #panel button:hover {
   background: rgb(47,228,191);
@@ -66,5 +83,15 @@ export default {
 }
 #panel button:focus {
   outline: none;
+}
+.score {
+  position: relative;
+  padding-top: 40px;
+  text-align: center;
+}
+.score img {
+  height: 88px;
+  width: 48px;
+  margin: 2px;
 }
 </style>
