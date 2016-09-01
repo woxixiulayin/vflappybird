@@ -1,6 +1,7 @@
 <template>
   <div id="app"
   tabindex = 0>
+  <music></music>
   <panel></panel>
   <bird></bird>
   <pipes></pipes>
@@ -13,6 +14,7 @@ import land from './components/land.vue'
 import panel from './components/panel.vue'
 import bird from './components/bird.vue'
 import pipes from './components/pipes'
+import music from './components/music'
 
 export default {
   data () {
@@ -22,6 +24,7 @@ export default {
     }
   },
   components: {
+    music,
     bird,
     panel,
     land,
