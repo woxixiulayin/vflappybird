@@ -66,12 +66,4 @@ body {
   overflow: hidden;
 }
 
-@media screen and (max-width: 600px) {
-  #app {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-}
-
 </style>

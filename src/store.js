@@ -4,6 +4,7 @@ import config from './config'
 let store = {
   state: {
     score: 0,
+    record: 0,
     passUplimit: 0,
     passDownlimit: config.land.top
   },
@@ -12,9 +13,7 @@ let store = {
   },
   addScore () {
     this.state.score++
-  },
-  resetScore () {
-    this.state.score = 0
+    this.doRecord()
   },
   //  游戏运行时，通过设置鸟可通过的中间值自动设置上下阈值
   setUpDownLimit (up, down) {
@@ -25,6 +24,13 @@ let store = {
   reset () {
     this.state.score = 0
     this.setUpDownLimit(0, config.land.top)
+  },
+  doRecord () {
+    this.state.record < this.state.score ? this.state.record = this.state.score : null
+    console.log(this.state.record)
+  },
+  getRecord () {
+    return this.state.record
   }
 }
 

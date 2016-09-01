@@ -1,8 +1,12 @@
 <template>
   <div id='panel'>
+  <div class="record">
+  <label>Record:</label>
+  {{ record }}
+  </div>
     <div class="score">
       <img v-for="num in scoreNums"
-      :src="numImgsSrc[num]">
+      :src="numImgsSrc[num]" track-by='$index'>
     </div>
     <button v-show='isshow' @click='click'>{{text}}</button>
   </div>
@@ -18,6 +22,7 @@ export default {
       text: 'Start',
       isshow: true,
       score: store.getScore(),
+      record: store.getScore(),
       numImgsSrc: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => require(`../assets/img/num_${item}.png`))
     }
   },
@@ -38,6 +43,7 @@ export default {
     })
     game.on('score', () => {
       store.addScore()
+      this.record = store.getRecord()
       this.score = store.getScore()
     })
   },
@@ -86,12 +92,19 @@ export default {
 }
 .score {
   position: relative;
-  padding-top: 40px;
   text-align: center;
 }
 .score img {
   height: 88px;
   width: 48px;
   margin: 2px;
+}
+.record {
+  padding-top: 20px;
+  height: 40px;
+  font-size: 30px;
+  line-height: 40px;
+  padding-left: .5em;
+  font-weight: bold;
 }
 </style>
