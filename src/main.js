@@ -8,5 +8,15 @@ new Vue({
   components: { App }
 })
 
-document.getElementById('app').focus()
+document.onkeydown = function (e) {
+  if (e.keyCode !== 32) return
+  if (game.state === game.states.ready) {
+    game.setState(game.states.start)
+  } else if (game.state === game.states.start) {
+    game.keyEvent('space')
+  }
+  return false
+}
+
+// document.getElementById('app').focus()
 game.setState('ready')

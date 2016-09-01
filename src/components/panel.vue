@@ -24,8 +24,7 @@ export default {
     })
   },
   methods: {
-    click () {
-      document.getElementById('app').focus()
+    click (e) {
       game.setState('start')
     }
   }
@@ -55,6 +54,7 @@ export default {
   color: white;
   border: none;
   border-radius: 10px;
+  z-index: 200;
 }
 #panel button:hover {
   background: rgb(47,228,191);

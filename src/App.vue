@@ -1,7 +1,6 @@
 <template>
   <div id="app"
-  tabindex = 0
-  @keydown.space="spaceEvent">
+  tabindex = 0>
   <panel></panel>
   <bird></bird>
   <pipes></pipes>
@@ -14,7 +13,6 @@ import land from './components/land.vue'
 import panel from './components/panel.vue'
 import bird from './components/bird.vue'
 import pipes from './components/pipes'
-import game from './game'
 
 export default {
   data () {
@@ -23,21 +21,11 @@ export default {
       height: 800
     }
   },
-  attached () {
-    //  自动获得焦点
-    document.getElementById('app').focus()
-  },
   components: {
     bird,
     panel,
     land,
     pipes
-  },
-  methods: {
-    spaceEvent () {
-      game.keyEvent('space')
-      return false
-    }
   }
 }
 </script>
