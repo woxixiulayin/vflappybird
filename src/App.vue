@@ -62,10 +62,13 @@ body {
 }
 
 #app {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width:  600px;
   height: 800px;
-  margin: auto;
+  margin-top: -400px;
+  margin-left: -300px;
   border: 5px solid black;
   background: url(./assets/img/bg_day.png) no-repeat;
   background-size: 100% 100%;
