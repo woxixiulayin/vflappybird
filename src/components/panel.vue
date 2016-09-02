@@ -8,7 +8,7 @@
       <img v-for="num in scoreNums"
       :src="numImgsSrc[num]" track-by='$index'>
     </div>
-    <button v-show='isshow' @click='click'>{{text}}</button>
+    <div id='btn-start' v-show='isshow' @click='click'>{{text}}</div>
   </div>
 </template>
 
@@ -64,30 +64,28 @@ export default {
   z-index: 200;
 }
 
-#panel button {
+#btn-start {
   position: absolute;
   top: 45%;
   left: 50%;
   margin-left: -4rem;
-  margin-top: -1.75rem;
-  width: 8rem;
-  height: 3.5rem;
   line-height: 3.5rem;
   font-size: 2.5rem;
+  padding: .3rem 1.5rem;
   /*text-align: center;*/
   background: rgb(26,188,156);
   color: white;
   border: none;
   border-radius: 10px;
 }
-#panel button:hover {
+#btn-start:hover {
   background: rgb(47,228,191);
 }
-#panel button:active {
+#btn-start:active {
   background: rgb(26,188,156);
   outline: none;
 }
-#panel button:focus {
+#btn-start:focus {
   outline: none;
 }
 .score {
