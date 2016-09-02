@@ -7,6 +7,7 @@
   <pipes></pipes>
   <land></land>
   </div>
+</div>
 </template>
 
 <script>
@@ -15,6 +16,7 @@ import panel from './components/panel.vue'
 import bird from './components/bird.vue'
 import pipes from './components/pipes'
 import music from './components/music'
+import game from './game'
 
 export default {
   data () {
@@ -29,6 +31,27 @@ export default {
     panel,
     land,
     pipes
+  },
+  attached () {
+    let body = document.querySelector('body')
+    body.onkeydown = (e) => {
+      if (e.keyCode !== 32) return
+      this.eventClick()
+      return false
+    }
+    body.ontouchstart = () => {
+      this.eventClick()
+      return false
+    }
+  },
+  methods: {
+    eventClick () {
+      if (game.state === game.states.ready) {
+        game.setState(game.states.start)
+      } else if (game.state === game.states.start) {
+        game.keyEvent('space')
+      }
+    }
   }
 }
 </script>
