@@ -46,10 +46,10 @@ export default {
   },
   methods: {
     eventClick () {
-      if (game.state === game.states.ready) {
+      if (game.state === 'ready') {
         game.setState(game.states.start)
-      } else if (game.state === game.states.start) {
-        game.keyEvent('space')
+      } else if (game.state === 'start') {
+        game.jump()
       }
     }
   }

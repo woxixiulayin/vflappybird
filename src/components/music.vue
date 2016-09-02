@@ -1,38 +1,27 @@
 <template>
-  <audio id='bird'></audio>
-  <audio id='bgm'></audio>
+<div></div>
 </template>
 
 <script>
 import game from '../game'
 
-let musicSrcMap = new Map([
-  ['swooshing', '/static/music/swooshing'],
-  ['die', '/static/music/die'],
-  ['hit', '/static/music/hit'],
-  ['score', '/static/music/point'],
-  ['wing', '/static/music/wing']
-])
+let audioPrefix = '/static/music/'
 
 export default {
   data () {
     return {
-      src: String,
-      birdAudio: {},
-      bgmAudio: {}
+      musics: ['wing', 'hit', 'die', 'score'],
+      audios: {}
     }
   },
   attached () {
-    this.birdAudio = document.getElementById('bird')
-    this.bgmAudio = document.getElementById('bgm')
+    this.musics.map(music => (this.audios[music] = this.addAuido(music)))
     game.on('jump', () => {
-      this.playMusic('swooshing')
+      this.playMusic('wing')
     })
     game.on('over', () => {
       this.playMusic('hit')
-    })
-    game.on('stop', () => {
-      this.playMusic('die')
+      setTimeout(() => this.playMusic('die'), 900)
     })
     game.on('score', () => {
       this.playMusic('score')
@@ -40,15 +29,12 @@ export default {
   },
   methods: {
     playMusic (music) {
-      if (typeof music !== 'string' || !musicSrcMap.has(music)) return
-      let audio = music === 'score' ? this.bgmAudio : this.birdAudio
-      // audio.autoplay = true
-      // audio.isLoadedmetadata = false
-      // audio.touchstart = true
-      // audio.audio = true
-      audio.src = musicSrcMap.get(music) + '.ogg'
-      audio.src = musicSrcMap.get(music) + '.mp3'
-      audio.play()
+      this.audios[music].play()
+    },
+    addAuido (music) {
+      let audio = new window.Audio()
+      audio.src = audioPrefix + music + '.mp3'
+      return audio
     }
   }
 }

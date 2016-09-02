@@ -149,7 +149,7 @@ export default {
       this.lastDownlimit = config.land.top - this.height + 2 * positionfix
     },
     jumpListener () {
-      this.gamestate === game.states.start ? this.speed = speed.controljump : null
+      this.speed = speed.controljump
     },
     listenGameEvent () {
       game.on('ready', () => {
@@ -180,8 +180,8 @@ export default {
       return top + this.height
     },
     updateBirdImg () {
-      if (this.gamestate === game.states.over ||
-          this.gamestate === game.states.stop) {
+      if (this.gamestate === 'over' ||
+          this.gamestate === 'stop') {
         this.birdimg = 'birdimg1'
       } else {
         this.birdimg = this.speed > 0 ? 'birdimg0' : 'birdimg2'

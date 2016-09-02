@@ -34,23 +34,6 @@ let game = Object.assign(new EventEmitter(), (() => {
     [states.stop, stopCallback]
   ])
 
-  let spaceKeyCallback = () => {
-    switch (game.state) {
-      case 'ready':
-        game.setState('start')
-        break
-      case 'start':
-        game.emit('jump')
-        break
-      default:
-        break
-    }
-  }
-  //  按键与回调对应的map对象
-  let keyEventCallback = new Map([
-    ['space', spaceKeyCallback]
-  ])
-
   return {
     states: states,
     //  记录当前游戏状态
@@ -62,9 +45,8 @@ let game = Object.assign(new EventEmitter(), (() => {
       // 执行相应的事件回调函数
       statesCallback.get(state)()
     },
-    keyEvent (key) {
-      if (!keyEventCallback.has(key)) return
-      keyEventCallback.get(key)()
+    jump () {
+      game.emit('jump')
     },
     score () {
       game.emit('score')
