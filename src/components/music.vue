@@ -32,7 +32,8 @@ export default {
       this.audios[music].play()
     },
     addAuido (music) {
-      let audio = new window.Audio()
+      // let audio = new window.Audio()
+      let audio = document.createElement('AUDIO')
       audio.src = audioPrefix + music + '.mp3'
       return audio
     }

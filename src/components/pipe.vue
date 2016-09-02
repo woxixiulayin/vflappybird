@@ -19,7 +19,7 @@ let defaultConfig = {
   pipeHeight: 1160,
   passHeight: 160,
   birdHorizontalPositon: 0.25 * 600,
-  widthfix: 5
+  widthfix: 10
 }
 
 function generatePassHeight () {
@@ -49,9 +49,6 @@ export default {
     top () {
       return this.passMiddlePosition - this.height / 2
     }
-    // isBirdIn () {
-    //   return
-    // }
   },
   attached () {
     game.on('start', () => {
@@ -59,6 +56,9 @@ export default {
     })
     game.on('over', () => {
       world.listeners.remove(this.update)
+    })
+    game.on('ready', () => {
+      this.passFlag = false
     })
   },
   methods: {
