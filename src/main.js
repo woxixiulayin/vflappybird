@@ -18,5 +18,8 @@ document.onkeydown = function (e) {
   return false
 }
 
-// document.getElementById('app').focus()
+//  设置页面大小，适配移动端
+let viewport = document.querySelector('meta[name=viewport]')
+viewport.setAttribute('content', 'width=600,user-scalable=no')
+
 game.setState('ready')

@@ -27,7 +27,6 @@ let store = {
   },
   doRecord () {
     this.state.record < this.state.score ? this.state.record = this.state.score : null
-    console.log(this.state.record)
   },
   getRecord () {
     return this.state.record
