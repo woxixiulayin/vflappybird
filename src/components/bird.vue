@@ -7,10 +7,10 @@
   </div>
 
 <!--显示bird的通过管子时的上下阈值  -->
-<!--   <div class='test'
+  <div class='test'
   v-show='isShowLimit'
   :style="{top: uplimit + 'px', height: downlimit - uplimit + 'px',left: left + 'px', width: width + 'px'}">
-  </div> -->
+  </div>
 </template>
 
 <script>
@@ -206,9 +206,9 @@ export default {
   transform: rotate(90deg);
   transition: transform 0.5s;
 }
-/*.test {
+.test {
   position: absolute;
   width: 84px;
   border: 1px solid black;
-}*/
+}
 </style>

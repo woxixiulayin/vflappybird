@@ -19,7 +19,7 @@ let defaultConfig = {
   pipeHeight: 1160,
   passHeight: 160,
   birdHorizontalPositon: 0.25 * 600,
-  widthfix: 15
+  widthfix: 5
 }
 
 function generatePassHeight () {
@@ -38,16 +38,20 @@ export default {
       width: defaultConfig.pipeWidth,
       height: defaultConfig.pipeHeight,
       passHeight: defaultConfig.passHeight,
-      passMiddlePosition: generatePassHeight()
+      passMiddlePosition: generatePassHeight(),
+      //  是否正在通过管子的标志
+      passFlag: false,
+      birPassedRange: config.bird.left + defaultConfig.widthfix - defaultConfig.pipeWidth,
+      birdEnterRange: config.bird.left + config.bird.width
     }
   },
   computed: {
     top () {
       return this.passMiddlePosition - this.height / 2
-    },
-    isBirdIn () {
-      return this.left < config.bird.left + config.bird.width && this.left + this.width > config.bird.left
     }
+    // isBirdIn () {
+    //   return
+    // }
   },
   attached () {
     game.on('start', () => {
@@ -74,12 +78,14 @@ export default {
       this.passMiddlePosition = generatePassHeight()
     },
     changePassLimit () {
-      //  通过管子之后
-      if (this.left + this.width - defaultConfig.widthfix < config.bird.left) {
+      //  通过管子之后执行一次
+      if (this.passFlag === true && this.left < this.birPassedRange) {
         store.setUpDownLimit(0, config.land.top)
-      } else if (this.isBirdIn) {
-      //  正在通过管子
+        this.passFlag = false
+      } else if (this.passFlag === false && this.left > this.birPassedRange && this.left < this.birdEnterRange) {
+      //  进入管子执行一次
         store.setUpDownLimit(this.passMiddlePosition - 80, this.passMiddlePosition + 80)
+        this.passFlag = true
       }
     }
   }
