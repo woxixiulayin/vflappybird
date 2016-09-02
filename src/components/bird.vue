@@ -7,10 +7,10 @@
   </div>
 
 <!--显示bird的通过管子时的上下阈值  -->
-  <div class='test'
+<!--   <div class='test'
   v-show='isShowLimit'
   :style="{top: uplimit + 'px', height: downlimit - uplimit + 'px',left: left + 'px', width: width + 'px'}">
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -50,6 +50,8 @@ export default {
       isRotate: false,
       //  记录上次的临界点，用于判断得分
       lastDownlimit: Number,
+      //  保存对应state的Update处理函数
+      stateUpdate: Object,
       //  一些默认参数
       positionConfig: {
         init: config.app.height * 0.4,
@@ -77,48 +79,27 @@ export default {
 
   methods: {
     update () {
-      switch (this.gamestate) {
-        case game.states.ready:
-          this.readyUpdate()
-          break
-        case game.states.start:
-          //  修正上下阈值
-          this.downlimit = store.state.passDownlimit - this.height + 2 * positionfix
-          this.uplimit = store.state.passUplimit - positionfix
-          this.startUpdate()
-          if (this.lastDownlimit !== this.downlimit && store.state.passDownlimit === config.land.top) {
-            game.score()
-          }
-          this.lastDownlimit = this.downlimit
-          break
-        case game.states.over:
-          this.overUpdate()
-          break
-      }
+      this.top += this.speed
+      this.stateUpdate()
       this.updateBirdImg()
     },
     readyUpdate () {
-      let _top = this.top + this.speed
       let _readydownlimit = this.positionConfig.readydownlimit
-      if (_top > _readydownlimit) {
+      if (this.top > _readydownlimit) {
         //  到达底部阈值
-        this.top = _readydownlimit
         this.speed = speed.readyjump
       } else {
         //  下落
         this.speed += speed.gravityPlus
-        this.top = _top
       }
     },
     startUpdate () {
-      let _top = this.top + this.speed
-      this.top = _top
-      if (_top < this.uplimit) {
+      if (this.top < this.uplimit) {
         //  碰到上管子
         // this.top = this.uplimit
         this.speed = 0
         game.setState(game.states.over)
-      } else if (_top > this.downlimit) {
+      } else if (this.top > this.downlimit) {
         //  碰到下管子
         // this.top = this.downlimit
         this.speed = 0
@@ -126,21 +107,22 @@ export default {
       } else {
         // 继续飞行
         this.speed += speed.gravityPlus
-        this.top = _top
+        // 得分
+        if (this.lastDownlimit !== this.downlimit && store.state.passDownlimit === config.land.top) {
+          game.score()
+        }
+        this.lastDownlimit = this.downlimit
       }
     },
     overUpdate () {
-      let _top = this.top + this.speed
       let _overDownLimit = this.positionConfig.overDownLimit
-      if (_top > _overDownLimit) {
+      if (this.top > _overDownLimit) {
         //  到达地面
-        this.top = _overDownLimit
         this.speed = 0
         game.setState(game.states.stop)
       } else {
         //  坠落
         this.speed += speed.gravityPlus
-        this.top = _top
       }
     },
     reset () {
@@ -157,15 +139,18 @@ export default {
         //  扶正bird
         this.isRotate = false
         world.listeners.add(this.update)
+        this.stateUpdate = this.readyUpdate
       })
       game.on('start', () => {
         this.reset()
         game.on('jump', this.jumpListener)
+        this.stateUpdate = this.startUpdate
       })
       game.on('over', () => {
         //  碰到管子后，停留半秒，开始下落
         game.removeListener('jump', this.jumpListener)
         world.listeners.remove(this.update)
+        this.stateUpdate = this.overUpdate
         setTimeout(() => {
           //  bird旋转90度
           this.isRotate = true
@@ -174,6 +159,10 @@ export default {
       })
       game.on('stop', () => {
         world.listeners.remove(this.update)
+      })
+      game.on('updownLimit', () => {
+        this.downlimit = store.state.passDownlimit - this.height + 2 * positionfix
+        this.uplimit = store.state.passUplimit - positionfix
       })
     },
     getBirdBottom (top) {
@@ -217,9 +206,9 @@ export default {
   transform: rotate(90deg);
   transition: transform 0.5s;
 }
-.test {
+/*.test {
   position: absolute;
   width: 84px;
   border: 1px solid black;
-}
+}*/
 </style>

@@ -1,5 +1,6 @@
 //  游戏运行过程中的状态管理
 import config from './config'
+import game from './game'
 
 let store = {
   state: {
@@ -20,6 +21,7 @@ let store = {
     if (up !== +up || down !== +down) throw new Error('not a number')
     this.state.passUplimit = up
     this.state.passDownlimit = down
+    game.updownLimitChange()
   },
   reset () {
     this.state.score = 0
@@ -33,4 +35,5 @@ let store = {
   }
 }
 
+game.on('ready', () => store.reset())
 export default store

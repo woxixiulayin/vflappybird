@@ -1,13 +1,11 @@
 import { EventEmitter } from 'events'
 import world from './world'
-import store from './store'
 
 let game = Object.assign(new EventEmitter(), (() => {
   //  游戏状态 ready->start->over->stop
   //  各游戏状态对应的回调操作
   let readyCallback = () => {
     world.timer.start()
-    store.reset()
   }
   let startCallback = () => {
   }
@@ -50,6 +48,9 @@ let game = Object.assign(new EventEmitter(), (() => {
     },
     score () {
       game.emit('score')
+    },
+    updownLimitChange () {
+      game.emit('updownLimit')
     }
   }
 })())
