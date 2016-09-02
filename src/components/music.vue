@@ -7,11 +7,11 @@
 import game from '../game'
 
 let musicSrcMap = new Map([
-  ['swooshing', '/static/music/swooshing.ogg'],
-  ['die', '/static/music/die.ogg'],
-  ['hit', '/static/music/hit.ogg'],
-  ['score', '/static/music/point.ogg'],
-  ['wing', '/static/music/wing.ogg']
+  ['swooshing', '/static/music/swooshing'],
+  ['die', '/static/music/die'],
+  ['hit', '/static/music/hit'],
+  ['score', '/static/music/point'],
+  ['wing', '/static/music/wing']
 ])
 
 export default {
@@ -42,7 +42,12 @@ export default {
     playMusic (music) {
       if (typeof music !== 'string' || !musicSrcMap.has(music)) return
       let audio = music === 'score' ? this.bgmAudio : this.birdAudio
-      audio.src = musicSrcMap.get(music)
+      // audio.autoplay = true
+      // audio.isLoadedmetadata = false
+      // audio.touchstart = true
+      // audio.audio = true
+      audio.src = musicSrcMap.get(music) + '.ogg'
+      audio.src = musicSrcMap.get(music) + '.mp3'
       audio.play()
     }
   }
