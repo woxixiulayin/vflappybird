@@ -5,7 +5,7 @@
 <script>
 import game from '../game'
 
-let audioPrefix = '/static/music/'
+let audioPrefix = './static/music/'
 
 export default {
   data () {
