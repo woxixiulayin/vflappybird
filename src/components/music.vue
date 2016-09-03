@@ -35,6 +35,7 @@ export default {
       // let audio = new window.Audio()
       let audio = document.createElement('AUDIO')
       audio.src = audioPrefix + music + '.mp3'
+      audio.preload = 'preload'
       return audio
     }
   }
