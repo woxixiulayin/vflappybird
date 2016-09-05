@@ -1,5 +1,5 @@
 ###简介
-- 基于vue框架做的flappy bird游戏，用vue-cli构建，在src文件夹下开发
+- 基于vue框架做的flappy bird游戏，用vue-cli构建，采用了部分ES6特性，在src文件夹下开发
 - 在线地址[http://keep-writing-codes.github.io/woxixiulayin/example/vflappybird/index.html](http://keep-writing-codes.github.io/woxixiulayin/example/vflappybird/index.html)
 
 ####基本思路
